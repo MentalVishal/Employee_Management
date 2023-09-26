@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Navbar } from "./Navbar";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export const Login = () => {
   const url = "https://dark-plum-tortoise-belt.cyclic.cloud";
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
@@ -24,7 +25,11 @@ export const Login = () => {
       body: JSON.stringify(props),
     })
       .then((res) => res.json())
-      .then((res) => console.log(res));
+      .then((res) => {
+        console.log(res);
+        localStorage.setItem("token", res.token);
+        navigate("/");
+      });
   };
 
   return (
@@ -47,7 +52,7 @@ export const Login = () => {
         <input
           type="password"
           placeholder="Password..."
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => setpassword(e.target.value)}
         />
         <input type="submit" value="Login" />
       </form>
